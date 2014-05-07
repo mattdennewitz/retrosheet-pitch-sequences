@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'retrosheet-pitch-sequences',
-    version = '1.0.0',
+    version = '1.0.1',
     description = 'Retrosheet at-bat ball/strike count state extraction',
     author = 'Matt Dennewitz',
     author_email = 'mattdennewitz@gmail.com',
