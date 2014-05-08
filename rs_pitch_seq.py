@@ -46,6 +46,7 @@ def extract_sequences(files, imode, output):
     of ball-strike counts.
     """
 
+    seq_obv = set()
     mtx = {
         '00': 1, '01': 0, '02': 0,
         '10': 0, '20': 0, '30': 0,
@@ -63,9 +64,13 @@ def extract_sequences(files, imode, output):
         reader = csv.DictReader(f)
 
         for row in reader:
+            seq = row['PITCH_SEQ_TX']
+
+            if seq in seq_obv:
+                continue
+
             count = {'balls': 0, 'strikes': 0}
             desc = []
-            seq = row['PITCH_SEQ_TX']
 
             for pitch in seq:
                 # handle walks
@@ -96,7 +101,8 @@ def extract_sequences(files, imode, output):
                     continue
 
                 key = '%s%s' % (count['balls'], count['strikes'])
-                mtx[key] += 1
+                if mtx[key] < 1:
+                    mtx[key] += 1
 
             if imode is True:
                 interact(seq, desc, count, row, mtx)
@@ -106,6 +112,9 @@ def extract_sequences(files, imode, output):
             for key in sorted(mtx):
                 values.append(mtx[key])
             writer.writerow(values)
+
+            # mark sequence as observed
+            seq_obv.add(seq)
 
             # reset matrix
             for key in mtx:
