@@ -1,3 +1,7 @@
 *~
 *.py[c|o]
 *.csv
+
+*.egg-info/
+build/
+dist/
